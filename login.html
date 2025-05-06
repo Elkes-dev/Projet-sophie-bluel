@@ -24,15 +24,13 @@
     </header>
     <main>
         <p class="login">Log In</p>
-        <form method="post" action="">
+        <form method="post" action="" required>
             <label for="email">E-mail</label><br>
-            <input type="email" name="email" id="email">
-        </form>
-        <form method="post" action="">
+            <input type="email" name="email" id="email" class="email"><br>
             <label for="password">Mot de passe</label><br>
-            <input type="password" name="mot-de-passe" id="password">
+            <input type="password" name="mot-de-passe" id="password" class="mot-de-passe"><br>
+            <input type="submit" value="Se connecter" class="connect-submit">
         </form>
-        <input type="button" value="Se connecter" class="connect-button">
         <p class="mdp">Mot de passe oublié</p>
     </main>
     <footer>
