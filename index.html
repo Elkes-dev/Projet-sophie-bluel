@@ -8,8 +8,10 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<link rel="stylesheet" href="./assets/style.css">
 	<script src="script.js" defer></script>
+	<script src="dialog.js" defer></script>
 </head>
 <body>
 <header>
@@ -18,7 +20,7 @@
 		<ul>
 			<li>projets</li>
 			<li>contact</li>
-			<li>login</li>
+			<li class="active">login</li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -63,5 +65,13 @@
 		</ul>
 	</nav>
 </footer>
+<aside class="modale" role="dialog" aria-hidden="true" aria-modal="false" aria-labelledby="titleModal">
+	<div class="modale-wrapper">
+	<h2 id="titleModal">Galerie Photo</h2>
+	<button></button>
+	<div class="galerie-modale"></div>
+	<button class="Ajout photo">Ajouter une Photo </button>
+	</div>
+</aside>
 </body>
 </html>
