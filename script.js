@@ -1,5 +1,7 @@
 let gallery = document.querySelector(".gallery");
 let allworks = [];
+let modifBouton;
+let recupH2;
 
 
 async function recupWorks (){
@@ -12,8 +14,15 @@ async function recupWorks (){
     }
     
     genererImage(allworks);
-    createButtons(allworks);
 
+    const token = localStorage.getItem("token"); // MASQUE LES BOUTONS SI L'UTILISATEUR SE CONNECTE
+    if(!token){
+    createButtons(allworks);
+    }else{
+        boutonModifier();
+        ecouteurBoutonModifier();
+    
+    }
     for (let i = 0; i < allworks.length; i++){
         console.log(allworks[i].category.id);
         console.log(allworks[i].category.name);
@@ -34,7 +43,7 @@ const buttonTous = document.createElement("button");
         genererImage(allworks);
     });
     menuCategories.appendChild(buttonTous);
-    console.log(buttonTous);
+    
 
     const uniqueCategorie = new Set();      // NOUVEAU TABLEAU QUI EVITE LES DOUBLONS
     const tableauUnique = [];
@@ -63,18 +72,26 @@ const buttonTous = document.createElement("button");
    gallery.parentNode.insertBefore(menuCategories,gallery);
 };
 
+/********************  CREATION BOUTON MODIFIER  ********************/
 
-    
-                                                /*const buttonObjets = document.createElement("button");
-                                                    buttonObjets.innerText = "Objets";
-                                                const buttonObjets = document.createElement("button");
-                                                    buttonApparts.innerText = "Appartements";
-                                                const buttonObjets = document.createElement("button");
-                                                    buttonHotels.innerText = "Hôtels & Restaurants";
-                                                */
-                                                // OU 
+ function boutonModifier (){
 
+    const recupH2= document.querySelector("#portfolio h2");
 
+    const modifDiv = document.createElement("div");
+          modifDiv.classList.add("div-modifier")
+
+    const icone = document.createElement("i");
+          icone.classList.add("fa-solid", "fa-pen-to-square"); 
+
+          modifBouton = document.createElement("button");
+          modifBouton.innerText = "modifier";
+          modifBouton.classList.add("texte-modifier");
+
+    modifDiv.appendChild(icone);
+    modifDiv.appendChild(modifBouton);
+    recupH2.parentNode.insertBefore(modifDiv,recupH2.nextSibling);
+};
 /********************  CREATION HTML  ********************/
 
 function genererImage(allworks){
@@ -99,66 +116,82 @@ gallery.innerHTML ="";
 
 
     
+  
+/***************** REDIRECTION LORS DE LA DECONNEXION *****************/
 
-    let formConfirmation = document.querySelector("form");
-
+document.addEventListener("DOMContentLoaded", () =>{
+    const token = localStorage.getItem("token");
+    const loginID = document.querySelector(".active");
     
-    formConfirmation.addEventListener("submit", async (event) =>{
 
-        event.preventDefault();  // EMPECHE LE RECHARGEMENT DE LA PAGE
+    if(loginID){
+    if(token){
+    loginID.innerText = "logout";
+    //navOff.style.display = "none";
+}; 
+     loginID.addEventListener("click", (event) =>{
+    event.preventDefault();
+    localStorage.removeItem("token");
+    window.location.href = "login.html";
+});
+    };
+});
 
-        const emailVide = document.querySelector(".email").value.trim();
-        const mdpVide = document.querySelector(".mot-de-passe").value.trim();
+  /*  event.preventDefault();
+    
+    const recupModale = document.querySelector(".modale");
+    recupModale.classList.add("active");
+    recupModale.setAttribute("aria-hidden","false");
+    recupModale.setAttribute("aria-modal","true");
+    
+    // AJOUT IMAGES A LA MODALE
+    const divModale = document.querySelector(".modale-wrapper");
+    const galerieModale = document.createElement("div");
+          divModale.appendChild(galerieModale);
 
-        if(emailVide === "" || mdpVide === ""){
+          genererImage(ecouteurBoutonModifier);
+    
+    console.log(recupModale);
+});
+}
+}; */
 
-            if (!document.querySelector(".error-message")){ // VERIFIE SI IL N'Y A PAS DE MESSAGE D'ERREUR DEJA CREES
-            const messageErreur = document.createElement("p");
-            messageErreur.innerText = "Le champ est vide";
-            document.body.appendChild(messageErreur);
-            }
-            return // STOPPE LA FONCTION SI LES CHAMPS SONT VIDES
-        };
 
-        const donnees = {
-            email : document.querySelector(".email").value, // RECUPERE VALEURS DU CHAMPS EMAIL
-            password : document.querySelector(".mot-de-passe").value,// RECUPERE VALEURS DU CHAMPS MDP
-        };
-        const chargeUtile = JSON.stringify(donnees);
-        try{
-        const reponseForm = await fetch("http://localhost:5678/api/users/login",{
-            method : "POST",
-            body : chargeUtile,
-            headers : {"Content-type" : "application/json"}
-        });
-        console.log(reponseForm);
-        const dataForm = await reponseForm.json();
-        console.log(dataForm);
+/* VOIR DERNIERE PARTIE DE LA FONCTION BOUTON MODIFIER */
 
-        if(reponseForm.ok){
-            localStorage.setItem("token",dataForm.token); // RECUPERE LE TOKEN 
-            window.location.href = "index.html"; // REDIRECTION VERS LA PAGE D ACCUEIL
-        }else {
-            throw new Error("Erreur dans l’identifiant ou le mot de passe");
-        }
-        }catch(error){
-            const errorMessage = document.createElement("p"); // CREATION MESSAGE D ERREUR
-            errorMessage.classList.add("error-message");
-            errorMessage.innerText = error.message;
-            document.body.appendChild(errorMessage);
-    }        
-    });
-     
-    /*function veriForm(){
-            if(reponseForm.ok){
-                localStorage.setItem("token",dataForm.token); // RECUPERE LE TOKEN 
-                window.location.href = "index.html"; // REDIRECTION VERS LA PAGE D ACCUEIL
-            }else{
-                const errorMessage = document.createElement("p"); // CREATION MESSAGE D ERREUR
-                errorMessage.classList.add("error-message");
-                errorMessage.innerText = "Erreur dans l’identifiant ou le mot de passe"
-                document.body.appendChild(errorMessage);
-            }
-      };
-*/
+/***************** CREATION MODALE *****************/
 
+function ecouteurBoutonModifier(){
+
+    if(modifBouton){
+     modifBouton.addEventListener("click", openModale);
+};  
+};
+
+function openModale(event){
+
+    event.preventDefault();
+
+    const recupModale = document.querySelector(".modale")
+  //  recupModale.setAttribute("aria-hidden","false");
+    //recupModale.setAttribute("aria-modal","true");
+    recupModale.classList.add("active");
+
+    afficherImagesModale();
+}; 
+
+function afficherImagesModale(){
+    
+    const gallerieModale = document.querySelector(".galerie-modale");
+
+    gallerieModale.innerHTML = "";
+
+    allworks.forEach(w =>{
+        let figuresModale =document.createElement("figure");
+        let imagesModale = document.createElement("img");
+            imagesModale.src = w.imageUrl;
+        
+            figuresModale.appendChild(imagesModale);
+            gallerieModale.appendChild(figuresModale);
+});
+};
