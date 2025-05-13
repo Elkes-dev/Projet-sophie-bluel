@@ -21,7 +21,7 @@ async function recupWorks (){
     }else{
         boutonModifier();
         ecouteurBoutonModifier();
-    
+        bandeNoirePageAccueil();
     }
     for (let i = 0; i < allworks.length; i++){
         console.log(allworks[i].category.id);
@@ -92,6 +92,32 @@ const buttonTous = document.createElement("button");
     modifDiv.appendChild(modifBouton);
     recupH2.parentNode.insertBefore(modifDiv,recupH2.nextSibling);
 };
+
+/************ CREATTION BANDE NOIRE ****************/
+function bandeNoirePageAccueil(){
+
+    const token2 = localStorage.getItem("token");
+    
+    if(token2){
+        try{
+    const bandeNoire = document.querySelector(".bande-noire");
+          bandeNoire.style.display =  "block";
+          document.querySelector(".bande-noire").style.display = "flex";
+
+    const icone = document.createElement("i");
+          icone.classList.add("fa-solid", "fa-pen-to-square");
+    const buttonEdition = document.createElement("p");
+          buttonEdition.innerText = "mode édition" ;
+
+
+    bandeNoire.appendChild(icone);
+    bandeNoire.appendChild(buttonEdition);
+        }
+        catch{
+            console.log(error)
+        }
+}
+};
 /********************  CREATION HTML  ********************/
 
 function genererImage(allworks){
@@ -137,25 +163,7 @@ document.addEventListener("DOMContentLoaded", () =>{
     };
 });
 
-  /*  event.preventDefault();
-    
-    const recupModale = document.querySelector(".modale");
-    recupModale.classList.add("active");
-    recupModale.setAttribute("aria-hidden","false");
-    recupModale.setAttribute("aria-modal","true");
-    
-    // AJOUT IMAGES A LA MODALE
-    const divModale = document.querySelector(".modale-wrapper");
-    const galerieModale = document.createElement("div");
-          divModale.appendChild(galerieModale);
-
-          genererImage(ecouteurBoutonModifier);
-    
-    console.log(recupModale);
-});
-}
-}; */
-
+ 
 
 /* VOIR DERNIERE PARTIE DE LA FONCTION BOUTON MODIFIER */
 
@@ -167,18 +175,23 @@ function ecouteurBoutonModifier(){
      modifBouton.addEventListener("click", openModale);
 };  
 };
-
+/************ FONCTION OUVERTURE MODALE *************/
 function openModale(event){
 
     event.preventDefault();
 
     const recupModale = document.querySelector(".modale")
-  //  recupModale.setAttribute("aria-hidden","false");
-    //recupModale.setAttribute("aria-modal","true");
+    recupModale.setAttribute("aria-hidden","false");
+    recupModale.setAttribute("aria-modal","true");
     recupModale.classList.add("active");
 
     afficherImagesModale();
-}; 
+    recupModale.addEventListener("click", function (event){                       //  OU // NE PAS fermer la modale si on clique dans la modale-wrapper + recuperer .modale-wrapper
+        if(event.target === recupModale)                                          // modaleWrapper.addEventListener("click", function (event{ modaleWrapper.stopPoropagation()}))
+            closeModale(); // FERME LA MODALE QUAND JE CLICK SUR ELLE      
+        }); 
+    }
+
 
 function afficherImagesModale(){
     
@@ -192,6 +205,118 @@ function afficherImagesModale(){
             imagesModale.src = w.imageUrl;
         
             figuresModale.appendChild(imagesModale);
-            gallerieModale.appendChild(figuresModale);
+            
+
+        const iconeTrash = document.createElement("i");
+              iconeTrash.classList.add("fa-solid", "fa-trash-can");
+        figuresModale.appendChild(iconeTrash);
+
+        gallerieModale.appendChild(figuresModale);
+
+        //SUPRESSION IMAGES
+    iconeTrash.addEventListener("click", () => deleteWorks(w.id));
 });
 };
+
+/**************** CLICK FERMETURE MODALE  ******************/
+const closeButton = document.querySelector(".sortir-modale");
+      closeButton.classList.add("fa-solid", "fa-xmark");
+              closeButton.addEventListener("click", closeModale);
+
+/**************** FONCTION FERMETURE MODALE  ******************/
+
+function closeModale (){
+
+                const sortirModale = document.querySelector(".modale.active");
+                
+
+                // RENVOYER LE FOCUS EN DEHORS DE LA MODALE 
+                const retourFocus = document.querySelector(".retour-focus")
+                if(retourFocus){
+                    retourFocus.focus();
+                }
+                // FOCUS RENVOYE APRES 10 SEC 
+                    setTimeout(() => {
+                        sortirModale.classList.remove("active");
+                        sortirModale.setAttribute("aria-hidden","true");
+                        sortirModale.removeAttribute("aria-modal");
+                    }, 10);
+                
+};
+
+/************ FONCTION SUPPRIMER TRAVAUX ***********/
+
+
+async function deleteWorks (id){
+
+            const token = localStorage.getItem("token");
+console.log(token);
+            if(token)
+                try{
+                    const fetchDelete = await fetch(`http://localhost:5678/api/works/${id}`,{
+                        method : "DELETE",
+                         headers :{
+                            "accept" : "*/*",
+                            "Authorization" : `Bearer ${token}` 
+                         } 
+                       })
+                       if(fetchDelete.ok){
+                        allworks = allworks.filter(w => w.id !== id)
+                    };
+                    afficherImagesModale();
+                    genererImage(allworks);
+                } catch{
+                        console.log(error);
+                }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*async function deleteWorks(id){
+
+            const token = localStorage.getItem("token");
+            try{
+            const fetchDelete = await fetch(`http://localhost:5678/api/works/${id}`,{
+                method : "DELETE",
+                headers : { "accept": "*/
+ //        });
+     /*      if(fetchDelete.ok){
+                allworks = allworks.filter( WorksSupprimés => WorksSupprimés.id !== id )
+            };
+            
+            afficherImagesModale();
+            genererImage(allworks);
+            } catch{
+                console.error("L'image n'a pas été supprimer");
+    
+}
+};*/
+
+
+
+
+
+
+
+
+/************ FONCTION AJOUT TRAVAUX ************/
+
+/*const buttonAjoutPhotos = document.querySelector(".ajout-photo");
+    buttonAjoutPhotos.addEventListener("click",)*/
+    
