@@ -32,6 +32,9 @@ form input{
     margin: 30px 0;
     font-family: 'Syne';
 }
+ .error-message{
+    display: none;
+}
 .connect-submit{
     background-color: #1D6154;
     border-radius: 60px;

@@ -125,6 +125,7 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
+
 .menu-categories{
 	display: flex;
 	flex-direction: row;
@@ -210,7 +211,46 @@ footer nav ul {
 	margin: 2em
 }
 
-/************** MODALE **************/
+/************** MODE LOGIN SUR PAGE D'ACCUEIL **************/
+header{
+	flex-wrap: wrap;
+	margin-top: 100px;
+}
+.bande-noire{
+	display:none;
+	background-color: #000000;
+	width: 100%;
+	margin: auto;
+	height: 50px;
+	justify-content: center;
+	align-items: center;
+	column-gap: 15px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+ .bande-noire p, .bande-noire i{
+	color: white;
+}
+
+#portfolio{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+.div-modifier{
+	padding-top: 10px;
+}
+.fa-pen-to-square{
+	padding-left:20px;
+}
+.texte-modifier{
+	border:none;
+	background-color: #FFFFFF;
+	padding-left: 5px;
+}
+/************** MODALE 1 **************/
 
 .modale{ 
 	position: fixed;
@@ -220,20 +260,21 @@ footer nav ul {
 	width: 100vw;
 	z-index: 1000;
 	justify-content: center;
-	align-items: center;
+	align-items: start;
 	top: 0;
 	left: 0;
+	overflow: auto;
 }
 .modale.active {
 	display: flex;
 }
 .modale-wrapper{
 	background-color: #FFFFFF;
-	width: 800px;
+	width: 630px;
 	border-radius: 10px;
 	position: relative;
-	overflow-y: auto;
-	max-height: 80vh;
+	overflow-y: visible;
+	margin-top: 60px;
 }
 .modale-wrapper h2{
 	text-align: center;
@@ -241,22 +282,57 @@ footer nav ul {
 	color: #000000;
 	font-family: 'Work Sans'; 
 	font-size: 26px;
+	font-weight: 400;
+	position: relative;
 }
 .galerie-modale{
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	gap: 20px;
+	grid-template-columns: repeat(5,80px);
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	padding-bottom: 50px;
 	border-bottom: 1px solid #B3B3B3;
+	width: fit-content;
+	margin: 0 auto;
 }
 .galerie-modale figure{
 	width: 100%;
+	position: relative;
 }
 .galerie-modale img{
 	width: 100%;
-	aspect-ratio: 1;
+	aspect-ratio: 0.7;
 	object-fit: cover;
 } 
+.ajout-photo{
+	display: block;
+	margin: 30px auto;
+	padding: 10px 20px;
+    background-color: #1D6154;
+    color: #ffff;
+    font-family: syne;
+    font-size: 14px;
+    border-radius: 60px;
+}
+.fa-trash-can{
+	position: absolute;	
+	color: #FFFFFF;
+	background-color: #000000;
+	top: 3px;
+    right: 3px;
+    padding: 5px;
+    border-radius: 3px;
+}
+.fa-xmark{
+	background-color: #FFFFFF;
+	position: absolute;
+    top: 20px;
+    right: 50px;
+    border: none;
+}
 
+/************** MODALE 2 **************/
 
 
 
