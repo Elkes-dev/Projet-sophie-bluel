@@ -14,6 +14,8 @@
 	<script src="dialog.js" defer></script>
 </head>
 <body>
+	<div class="bande-noire">
+	</div>
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
@@ -53,7 +55,7 @@
 			<input type="email" name="email" id="email">
 			<label for="message">Message</label>
 			<textarea name="message" id="message" cols="30" rows="10"></textarea>
-			<input type="submit" value="Envoyer">
+			<input type="submit" class="retour-focus" value="Envoyer">
 		</form>
 	</section>
 </main>
@@ -67,10 +69,18 @@
 </footer>
 <aside class="modale" role="dialog" aria-hidden="true" aria-modal="false" aria-labelledby="titleModal">
 	<div class="modale-wrapper">
+		<div class="modale1">
 	<h2 id="titleModal">Galerie Photo</h2>
-	<button></button>
+	<button class="sortir-modale"></button>
 	<div class="galerie-modale"></div>
-	<button class="Ajout photo">Ajouter une Photo </button>
+	<button class="ajout-photo">Ajouter une Photo </button>
+		</div>
+		<div class="modale2">
+			<form>
+				<label for="new-Photo">Ajout Photo</label>
+				<input type="file" id="new-Photo" name="new-Photo" accept="image/png, image/jpg">
+			</form>
+		</div>
 	</div>
 </aside>
 </body>
