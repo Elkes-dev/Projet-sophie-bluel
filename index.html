@@ -76,22 +76,19 @@
 	<button class="ajout-photo">Ajouter une Photo </button>
 		</div>
 		<div class="modale2">
-			<form action="" method="post" class="form-ajout-photos">
+			<form action="" method="post" class="form-ajout-photos" >
 				<h2 id="titleModal2">Ajout Photo</h2>
 				<div class="upload-pictures">
-					<input type="file" id="new-photo" name="new-photo" accept="image/png, image/jpg">
+					<input type="file" id="new-photo" name="new-photo" accept="image/png, image/jpg" required>
 					<i class="upload-image">image icone</i>
 					<button type="button" class="upload-button">+ Ajouter Photo</button>
 					<p>jpg, png : 4mo max</p>
 				</div>
 				<div class="upload-text">
 					<label for="titre">Titre</label>
-					<input type="text" id="titre" name="titre" class="titre">
+					<input type="text" id="titre" name="titre" class="titre" required>
 					<label for="categorie">Catégorie</label>
-					<select id="categorie" name="categorie" class="categorie">
-						<option value="Objets"></option>
-						<option value="Appartements"></option>
-						<option value="Hotels & Restaurants"></option>
+					<select id="categorie" name="categorie" class="categorie" required>
 					</select>
 				</div>
 					<input type="submit" value="Valider" class="form-valide">
