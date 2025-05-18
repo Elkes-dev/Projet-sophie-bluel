@@ -190,6 +190,13 @@ function openModale(event){
         if(event.target === recupModale)                                          // modaleWrapper.addEventListener("click", function (event{ modaleWrapper.stopPoropagation()}))
             closeModale(); // FERME LA MODALE QUAND JE CLICK SUR ELLE      
         }); 
+            // PASSAGE A L'AUTRE MODALE
+            const recupModale1 = document.querySelector(".modale1")
+            const clickOuvertureModale2 = document.querySelector(".ajout-photo")
+                  clickOuvertureModale2.addEventListener("click",() =>{
+                    recupModale1.style.display ="none"
+                    openModale2();
+                  });
     }
 
 
@@ -270,53 +277,122 @@ console.log(token);
                 }
 };
 
+function openModale2(event){
+      //   event.preventDefault();
+
+         const recupModale2 = document.querySelector(".modale2");
+               recupModale2.style.display = "block";
+        
+        const imageIcon = document.querySelector(".upload-image");
+              imageIcon.classList.add("fa-regular", "fa-image");
+              imageIcon.style.display = "block";
+              imageIcon.innerText = "";
+};
+
+/***************** UPLOAD IMAGES MODALE 2  *****************/
 
 
+const recupBoutonAjoutPhotos = document.querySelector(".upload-button"); 
+      recupBoutonAjoutPhotos.addEventListener("click", ()=>{
+        const recupInputFile = document.getElementById("new-photo");
+              recupInputFile.click(); // OUVRE LE FICHIER INPUT=FILE
+              
+      })  
 
+  
+      async function loadCategories(){
 
+        const recupCategForm = document.querySelector(".categorie")
 
+            // RECUPERATION DYNAMIQUEMENT DES CATEGORIES
 
-
-
-
-
-
-
-
-
-
-
-
-
-/*async function deleteWorks(id){
-
-            const token = localStorage.getItem("token");
-            try{
-            const fetchDelete = await fetch(`http://localhost:5678/api/works/${id}`,{
-                method : "DELETE",
-                headers : { "accept": "*/
- //        });
-     /*      if(fetchDelete.ok){
-                allworks = allworks.filter( WorksSupprimés => WorksSupprimés.id !== id )
-            };
+        const reponseCateg = await fetch("http://localhost:5678/api/categories");
+        const TakeCateg = await reponseCateg.json();         
             
-            afficherImagesModale();
-            genererImage(allworks);
-            } catch{
-                console.error("L'image n'a pas été supprimer");
+        TakeCateg.forEach(cat =>{
+            const option = document.createElement("option");
+                  option.value = cat.id;
+                  option.innerText = cat.name;
+            recupCategForm.appendChild(option);
+        });
+    }
+    loadCategories();
+
+        const formValid = document.querySelector(".form-ajout-photos")
+              formValid.addEventListener("submit", sendForm)
     
+        async function sendForm(event){
+
+            event.preventDefault();
+
+            // RECUPERE LES ELEMENTS CHARGEES SUR L'INPUT
+        const fichier = document.getElementById("new-photo").files[0];
+        
+          const recupTitleForm = document.querySelector(".titre")
+          const recupCategForm = document.querySelector(".categorie")
+
+            
+        const formData = new FormData();
+              formData.append("image", fichier)
+              formData.append("title", recupTitleForm.value )
+              formData.append("category", parseInt(recupCategForm.value) )
+
+            try{
+              const token =   localStorage.getItem("token")
+              console.log("TOKEN:", token);
+      if( fichier && recupCategForm.value.trim() !== "" && recupTitleForm.value.trim() !== "" ){
+            const sendData = await fetch("http://localhost:5678/api/works",{
+                method : "POST",
+                headers :{"accept": "application/json",
+                      "Authorization": `Bearer ${token}` // token obligatoire !!
+                },
+          //    headers :'Content-Type: multipart/form-data', PEUT ETRE NE PAS L'UTILISER ? (VOIR DOC MDN FORMDATA)
+                body : formData
+        }) 
+        
+
+        if(sendData.ok){
+            const newWork = await sendData.json()
+
+            const newFigure = document.createElement("figure");
+            const newImage = document.createElement("img");
+                  newImage.src = newWork.imageUrl
+            const newFigCatption = document.createElement("figcaption");
+                  newFigCatption.innerText = newWork.title;
+
+            const recupModale2 = document.querySelector(".modale2" )
+                  recupModale2.prepend(newFigure);
+                  recupModale2.style.display ="none"
+            
+            const fermModale = document.querySelector(".modale" )
+                  fermModale.style.display="none"
+                  
+            genererImage(newWork);
+            afficherImagesModale(newWork);
+            
+            formValid.reset();
+        // Optionnel : feedback visuel sur le bouton
+        const buttonValid = document.querySelector(".form-valide")
+        buttonValid.style.backgroundColor = "#1D6154";
+            
+        }   
+        }
+        else{
+            alert("Les champs ne sont pas correctement remplis")
+        }
+    } catch (error){
+        alert ("Erreur de connexion au serveur")
+        console.log(error);
+    }
 }
-};*/
 
+/*
+            const newFigure = document.createElement("figure");
+            const newImage = document.createElement("img");
+                  newImage.src = newWork.imageUrl
+            const newFigCatption = document.createElement("figcaption");
+                  newFigCatption.innerText = newWork.title;
 
-
-
-
-
-
-
-/************ FONCTION AJOUT TRAVAUX ************/
-
-/*const buttonAjoutPhotos = document.querySelector(".ajout-photo");
-    buttonAjoutPhotos.addEventListener("click",)*/
-    
+            newFigure.appendChild(newImage);
+            newFigure.appendChild(newFigCatption);
+            gallery.prepend(newFigure)*/
