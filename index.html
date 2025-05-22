@@ -11,7 +11,6 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<link rel="stylesheet" href="./assets/style.css">
 	<script src="script.js" defer></script>
-	<script src="dialog.js" defer></script>
 </head>
 <body>
 	<div class="bande-noire">
@@ -71,18 +70,21 @@
 	<div class="modale-wrapper">
 		<div class="modale1">
 	<h2 id="titleModal">Galerie Photo</h2>
-	<button class="sortir-modale"></button>
+	<button class="sortir-modale1"></button>
 	<div class="galerie-modale"></div>
 	<button class="ajout-photo">Ajouter une Photo </button>
 		</div>
 		<div class="modale2">
+			<button class="retour-modale1"></i></button>
+			<button class="sortir-modale2"></button>
 			<form action="" method="post" class="form-ajout-photos" >
 				<h2 id="titleModal2">Ajout Photo</h2>
 				<div class="upload-pictures">
 					<input type="file" id="new-photo" name="new-photo" accept="image/png, image/jpg" required>
+					<img id="image-pre-envoie">
 					<i class="upload-image">image icone</i>
 					<button type="button" class="upload-button">+ Ajouter Photo</button>
-					<p>jpg, png : 4mo max</p>
+					<p class="format-photos">jpg, png : 4mo max</p>
 				</div>
 				<div class="upload-text">
 					<label for="titre">Titre</label>
