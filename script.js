@@ -19,6 +19,10 @@ async function recupWorks (){
     const token = localStorage.getItem("token"); // MASQUE LES BOUTONS SI L'UTILISATEUR SE CONNECTE
     if(!token){
     createButtons(allworks);
+    const recupNav = document.getElementById("portfolio")
+          recupNav.style.display="block";
+    const header = document.querySelector("header");
+          header.style.marginTop = "30px"
     }else{
         boutonModifier();
         ecouteurBoutonModifier();
@@ -69,8 +73,7 @@ const buttonTous = document.createElement("button");
         menuCategories.appendChild(buttons);
         menuCategories.classList.add("menu-categories");
     });
-    console.log(tableauUnique);
-   // gallery.appendChild(menuCategories);
+  
    gallery.parentNode.insertBefore(menuCategories,gallery);
 };
 
@@ -109,17 +112,20 @@ function bandeNoirePageAccueil(){
     const bandeNoire = document.querySelector(".bande-noire");
           bandeNoire.style.display =  "block";
           document.querySelector(".bande-noire").style.display = "flex";
+          const dejaPresent = bandeNoire.querySelector("p.mode-edition");
+if (dejaPresent) return
 
     const icone = document.createElement("i");
           icone.classList.add("fa-solid", "fa-pen-to-square");
     const buttonEdition = document.createElement("p");
           buttonEdition.innerText = "mode édition" ;
+          buttonEdition.classList.add("mode-edition"); 
 
 
     bandeNoire.appendChild(icone);
     bandeNoire.appendChild(buttonEdition);
         }
-        catch{
+        catch (error){
             console.log(error)
         }
 }
@@ -159,7 +165,6 @@ document.addEventListener("DOMContentLoaded", () =>{
     if(loginID){
     if(token){
     loginID.innerText = "logout";
-    //navOff.style.display = "none";
 }; 
      loginID.addEventListener("click", (event) =>{
     event.preventDefault();
@@ -169,9 +174,7 @@ document.addEventListener("DOMContentLoaded", () =>{
     };
 });
 
- 
 
-/* VOIR DERNIERE PARTIE DE LA FONCTION BOUTON MODIFIER */
 
 /***************** CREATION MODALE *****************/
 
@@ -184,7 +187,7 @@ function ecouteurBoutonModifier(){
 /************ FONCTION OUVERTURE MODALE *************/
 function openModale(event){
 
-    if (event) event.preventDefault(); // évite l’erreur event.preventDefault();
+    if (event) event.preventDefault(); 
 
     const recupModale = document.querySelector(".modale")
     recupModale.setAttribute("aria-hidden","false");
@@ -198,8 +201,8 @@ function openModale(event){
      recupModale2.style.display = "none";
 
     afficherImagesModale();
-    recupModale.addEventListener("click", function (event){                       //  OU // NE PAS fermer la modale si on clique dans la modale-wrapper + recuperer .modale-wrapper
-        if(event.target === recupModale)                                          // modaleWrapper.addEventListener("click", function (event{ modaleWrapper.stopPoropagation()}))
+    recupModale.addEventListener("click", function (event){                     
+        if(event.target === recupModale)                                        
             closeModale(); // FERME LA MODALE QUAND JE CLICK SUR ELLE      
         }); 
             // PASSAGE A L'AUTRE MODALE
@@ -208,7 +211,7 @@ function openModale(event){
                   clickOuvertureModale2.addEventListener("click",() =>{
                     recupModale1.style.display ="none"
                     openModale2();
-                  });
+                  })
     }
 
 /*************** FONCTION AFFFICHAGE DE LA MODALE **************/
@@ -304,8 +307,7 @@ function openModale2(event){
         const imageIcon = document.querySelector(".upload-image");
               imageIcon.classList.add("fa-regular", "fa-image");
               imageIcon.style.display = "block";
-              imageIcon.innerText = "";
-            
+              imageIcon.innerText = "";           
 
 };
 /***************** RETOUR MODALE1 - FERMETURE MODALE2 *******************/
@@ -315,15 +317,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const arrow = document.querySelector(".retour-modale1");
         arrow.classList.add("fa-solid", "fa-arrow-left");
 
-  closeModale2?.addEventListener("click", () => {
-    console.log("Croix cliquée");
-    alert("Croix cliquée");
-  });
-
-  arrow?.addEventListener("click", () => {
-    console.log("Flèche cliquée");
-    alert("Flèche cliquée");
-  });
 });
 document.addEventListener("DOMContentLoaded", () => {
   const closeModale2 = document.querySelector(".sortir-modale2");
@@ -335,7 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Flèche : revient à modale1
   arrow?.addEventListener("click", () => {
     modale2.style.display = "none";
-    modale1.style.display = "block"; // ou 'block' selon ton CSS
+    modale1.style.display = "block"; 
   });
 
   // Croix : ferme les modales
@@ -344,7 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
     modale1.style.display = "none";
     modale.setAttribute("aria-hidden","true");
     modale.removeAttribute("aria-modal");
-    modale.classList.remove("active"); // ← AJOUTÉ pour enlever le fond noir
+    modale.classList.remove("active"); 
   });
 });
  
@@ -368,17 +361,18 @@ const recupBoutonAjoutPhotos = document.querySelector(".upload-button");
             if(file){
                const imgRecupUrl = document.getElementById("image-pre-envoie");
                      imgRecupUrl.src = URL.createObjectURL(file)
+                     imgRecupUrl.style.display = "block"; 
 
                      imgRecupUrl.onload = ()=>{
                         URL.revokeObjectURL(imgRecupUrl.src);
-
+                    
                 const recupUploadButton = document.querySelector(".upload-button");
                 const recupFormatPhotos = document.querySelector(".format-photos");                        
                         recupUploadButton.style.display="none";
                         recupFormatPhotos.style.display="none";
-            }
-            }
-            })
+            };
+            };
+            });
 
 
 
@@ -409,9 +403,9 @@ const recupBoutonAjoutPhotos = document.querySelector(".upload-button");
 
     // REND LE BOUTON VERT  APRES REMPLISSAGE FORMULAIRE
 function validButton() {
-  const file = document.getElementById("new-photo").files[0]; // récupère le fichier image
-  const title = document.querySelector(".titre").value.trim(); // récupère le titre (en enlevant les espaces inutiles)
-  const cat = document.querySelector(".categorie").value; // récupère la catégorie
+  const file = document.getElementById("new-photo").files[0]; 
+  const title = document.querySelector(".titre").value.trim(); 
+  const cat = document.querySelector(".categorie").value; 
 
   // Si les 3 champs sont remplis, bouton vert, sinon gris
   document.querySelector(".form-valide").style.backgroundColor =
@@ -469,8 +463,9 @@ document.querySelector(".categorie").addEventListener("change", validButton);
             openModale();
             afficherImagesModale();
             
-
+            const formValid = document.querySelector(".form-ajout-photos")
             formValid.reset();  
+            reinitialisation()
         }   
         }
         else{
@@ -481,3 +476,18 @@ document.querySelector(".categorie").addEventListener("change", validButton);
         console.log(error);
     }
 };
+
+function reinitialisation(){
+    const imgsupprim = document.getElementById("image-pre-envoie");
+    imgsupprim.src = "";
+    imgsupprim.style.display = "none"; // cacher l’image vide
+
+    const voirButton = document.querySelector(".upload-button");
+    voirButton.style.display = "block";
+    
+    const formatPhotos = document.querySelector(".format-photos");
+    formatPhotos.style.display = "block"; 
+
+    
+    document.getElementById("new-photo").value = "";
+}
