@@ -337,12 +337,24 @@ header{
 .modale2{
 	display: none;
 }
+.fa-arrow-left{
+	background-color: #FFFFFF;
+    position: absolute;
+    top: 20px;
+    left: 50px;
+    border: none;
+}
 .form-ajout-photos{
 	display: flex;
 	flex-direction: column;
 }
 #new-photo{
 	display: none;
+	position: relative;
+}
+#image-pre-envoie{
+	max-width: 110px;
+	position: absolute;
 }
 .upload-pictures{
 	display: flex;
@@ -395,4 +407,17 @@ header{
 	padding: 10px 70px ;
 	border:none;
 }
+.sortir-modale2, .retour-modale1 {
+  position: absolute;
+  top: 20px;
+  border: none;
+  background: white;
+  z-index: 1100;
+}
+.sortir-modale2 {
+  right: 20px;
+}
 
+.retour-modale1 {
+  left: 20px;
+}
