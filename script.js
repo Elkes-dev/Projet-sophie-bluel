@@ -3,6 +3,7 @@ let allworks = [];
 let modifBouton;
 let recupH2;
 
+/*********** FONCTION RECUPERE LES WORKS ************/
 
 async function recupWorks (){
     try{
@@ -14,7 +15,7 @@ async function recupWorks (){
     }
     
     genererImage(allworks);
-
+    
     const token = localStorage.getItem("token"); // MASQUE LES BOUTONS SI L'UTILISATEUR SE CONNECTE
     if(!token){
     createButtons(allworks);
@@ -32,7 +33,8 @@ async function recupWorks (){
 recupWorks();
 
 /********************  FONCTION SET  ********************/
-function createButtons (allworks){      // PARCOURS LE TABLEAU ET RECUPERE LE NOM ET CRER LE BUTON
+
+function createButtons (allworks){      // PARCOURS LE TABLEAU ET RECUPERE LE NOM ET CRER LE BOUTON
                 
     /* CREATION BOUTON */
 const menuCategories = document.createElement("nav");
@@ -75,6 +77,10 @@ const buttonTous = document.createElement("button");
 /********************  CREATION BOUTON MODIFIER  ********************/
 
  function boutonModifier (){
+    
+    // VERIFIE SI LE BOUTON EXISTE DEJA 
+
+    if (document.querySelector(".div-modifier")) return
 
     const recupH2= document.querySelector("#portfolio h2");
 
@@ -178,12 +184,18 @@ function ecouteurBoutonModifier(){
 /************ FONCTION OUVERTURE MODALE *************/
 function openModale(event){
 
-    event.preventDefault();
+    if (event) event.preventDefault(); // évite l’erreur event.preventDefault();
 
     const recupModale = document.querySelector(".modale")
     recupModale.setAttribute("aria-hidden","false");
     recupModale.setAttribute("aria-modal","true");
     recupModale.classList.add("active");
+
+
+    const recupModale1 = document.querySelector(".modale1")
+    const recupModale2 = document.querySelector(".modale2")
+     recupModale1.style.display = "block";
+     recupModale2.style.display = "none";
 
     afficherImagesModale();
     recupModale.addEventListener("click", function (event){                       //  OU // NE PAS fermer la modale si on clique dans la modale-wrapper + recuperer .modale-wrapper
@@ -191,7 +203,7 @@ function openModale(event){
             closeModale(); // FERME LA MODALE QUAND JE CLICK SUR ELLE      
         }); 
             // PASSAGE A L'AUTRE MODALE
-            const recupModale1 = document.querySelector(".modale1")
+            
             const clickOuvertureModale2 = document.querySelector(".ajout-photo")
                   clickOuvertureModale2.addEventListener("click",() =>{
                     recupModale1.style.display ="none"
@@ -199,7 +211,7 @@ function openModale(event){
                   });
     }
 
-
+/*************** FONCTION AFFFICHAGE DE LA MODALE **************/
 function afficherImagesModale(){
     
     const gallerieModale = document.querySelector(".galerie-modale");
@@ -226,7 +238,7 @@ function afficherImagesModale(){
 };
 
 /**************** CLICK FERMETURE MODALE  ******************/
-const closeButton = document.querySelector(".sortir-modale");
+const closeButton = document.querySelector(".sortir-modale1");
       closeButton.classList.add("fa-solid", "fa-xmark");
               closeButton.addEventListener("click", closeModale);
 
@@ -247,6 +259,10 @@ function closeModale (){
                         sortirModale.classList.remove("active");
                         sortirModale.setAttribute("aria-hidden","true");
                         sortirModale.removeAttribute("aria-modal");
+
+                    document.querySelector(".modale1").style.display = "block";
+                    document.querySelector(".modale2").style.display = "none";
+
                     }, 10);
                 
 };
@@ -277,17 +293,61 @@ console.log(token);
                 }
 };
 
+/************** FONCTION OUVERTURE MODALE 2**************/
+
 function openModale2(event){
       //   event.preventDefault();
 
          const recupModale2 = document.querySelector(".modale2");
                recupModale2.style.display = "block";
-        
+
         const imageIcon = document.querySelector(".upload-image");
               imageIcon.classList.add("fa-regular", "fa-image");
               imageIcon.style.display = "block";
               imageIcon.innerText = "";
+            
+
 };
+/***************** RETOUR MODALE1 - FERMETURE MODALE2 *******************/
+document.addEventListener("DOMContentLoaded", () => {
+  const closeModale2 = document.querySelector(".sortir-modale2");
+        closeModale2.classList.add("fa-solid", "fa-xmark");
+  const arrow = document.querySelector(".retour-modale1");
+        arrow.classList.add("fa-solid", "fa-arrow-left");
+
+  closeModale2?.addEventListener("click", () => {
+    console.log("Croix cliquée");
+    alert("Croix cliquée");
+  });
+
+  arrow?.addEventListener("click", () => {
+    console.log("Flèche cliquée");
+    alert("Flèche cliquée");
+  });
+});
+document.addEventListener("DOMContentLoaded", () => {
+  const closeModale2 = document.querySelector(".sortir-modale2");
+  const arrow = document.querySelector(".retour-modale1");
+  const modale1 = document.querySelector(".modale1");
+  const modale2 = document.querySelector(".modale2");
+  const modale = document.querySelector(".modale");
+
+  // Flèche : revient à modale1
+  arrow?.addEventListener("click", () => {
+    modale2.style.display = "none";
+    modale1.style.display = "block"; // ou 'block' selon ton CSS
+  });
+
+  // Croix : ferme les modales
+  closeModale2?.addEventListener("click", () => {
+    modale2.style.display = "none";
+    modale1.style.display = "none";
+    modale.setAttribute("aria-hidden","true");
+    modale.removeAttribute("aria-modal");
+    modale.classList.remove("active"); // ← AJOUTÉ pour enlever le fond noir
+  });
+});
+ 
 
 /***************** UPLOAD IMAGES MODALE 2  *****************/
 
@@ -295,10 +355,35 @@ function openModale2(event){
 const recupBoutonAjoutPhotos = document.querySelector(".upload-button"); 
       recupBoutonAjoutPhotos.addEventListener("click", ()=>{
         const recupInputFile = document.getElementById("new-photo");
-              recupInputFile.click(); // OUVRE LE FICHIER INPUT=FILE
-              
+              recupInputFile.click(); // OUVRE LE FICHIER INPUT=FILE             
       })  
 
+/*****************  AFFICHAGE DE L'IMAGE DANS LA MODALE 2 *****************/
+
+      const fileRecup = document.getElementById("new-photo")    
+            fileRecup.addEventListener("change",function(event) {
+            
+            const file = event.target.files[0];
+                
+            if(file){
+               const imgRecupUrl = document.getElementById("image-pre-envoie");
+                     imgRecupUrl.src = URL.createObjectURL(file)
+
+                     imgRecupUrl.onload = ()=>{
+                        URL.revokeObjectURL(imgRecupUrl.src);
+
+                const recupUploadButton = document.querySelector(".upload-button");
+                const recupFormatPhotos = document.querySelector(".format-photos");                        
+                        recupUploadButton.style.display="none";
+                        recupFormatPhotos.style.display="none";
+            }
+            }
+            })
+
+
+
+
+/***************** FONCTION LOAD CATEGORIES  *****************/
   
       async function loadCategories(){
 
@@ -320,17 +405,34 @@ const recupBoutonAjoutPhotos = document.querySelector(".upload-button");
 
         const formValid = document.querySelector(".form-ajout-photos")
               formValid.addEventListener("submit", sendForm)
-    
-        async function sendForm(event){
+
+
+    // REND LE BOUTON VERT  APRES REMPLISSAGE FORMULAIRE
+function validButton() {
+  const file = document.getElementById("new-photo").files[0]; // récupère le fichier image
+  const title = document.querySelector(".titre").value.trim(); // récupère le titre (en enlevant les espaces inutiles)
+  const cat = document.querySelector(".categorie").value; // récupère la catégorie
+
+  // Si les 3 champs sont remplis, bouton vert, sinon gris
+  document.querySelector(".form-valide").style.backgroundColor =
+    file && title && cat ? "#1D6154" : "#A7A7A7";
+}
+document.getElementById("new-photo").addEventListener("change",validButton);
+document.querySelector(".titre").addEventListener("input", validButton);
+document.querySelector(".categorie").addEventListener("change", validButton);
+
+
+ /***************  FONCTION ENVOIE FORMULAIRE DE MODALE    ***************/
+
+ async function sendForm(event){
 
             event.preventDefault();
 
             // RECUPERE LES ELEMENTS CHARGEES SUR L'INPUT
         const fichier = document.getElementById("new-photo").files[0];
-        
-          const recupTitleForm = document.querySelector(".titre")
-          const recupCategForm = document.querySelector(".categorie")
 
+          const recupTitleForm = document.querySelector(".titre");
+          const recupCategForm = document.querySelector(".categorie");
             
         const formData = new FormData();
               formData.append("image", fichier)
@@ -339,12 +441,12 @@ const recupBoutonAjoutPhotos = document.querySelector(".upload-button");
 
             try{
               const token =   localStorage.getItem("token")
-              console.log("TOKEN:", token);
+            console.log("Token utilisé :", token);
       if( fichier && recupCategForm.value.trim() !== "" && recupTitleForm.value.trim() !== "" ){
             const sendData = await fetch("http://localhost:5678/api/works",{
                 method : "POST",
                 headers :{"accept": "application/json",
-                      "Authorization": `Bearer ${token}` // token obligatoire !!
+                      "Authorization": `Bearer ${token}` 
                 },
           //    headers :'Content-Type: multipart/form-data', PEUT ETRE NE PAS L'UTILISER ? (VOIR DOC MDN FORMDATA)
                 body : formData
@@ -354,27 +456,21 @@ const recupBoutonAjoutPhotos = document.querySelector(".upload-button");
         if(sendData.ok){
             const newWork = await sendData.json()
 
-            const newFigure = document.createElement("figure");
-            const newImage = document.createElement("img");
-                  newImage.src = newWork.imageUrl
-            const newFigCatption = document.createElement("figcaption");
-                  newFigCatption.innerText = newWork.title;
+            const recupModale2 = document.querySelector(".modale2")
+            recupModale2.style.display ="none"
+            
+          const recupModale1 = document.querySelector(".modale1")
+                recupModale1.style.display = "block"
+            
+           // const fermModale = document.querySelector(".modale" )
+             //     fermModale.style.display="none"
 
-            const recupModale2 = document.querySelector(".modale2" )
-                  recupModale2.prepend(newFigure);
-                  recupModale2.style.display ="none"
+            await recupWorks();
+            openModale();
+            afficherImagesModale();
             
-            const fermModale = document.querySelector(".modale" )
-                  fermModale.style.display="none"
-                  
-            genererImage(newWork);
-            afficherImagesModale(newWork);
-            
-            formValid.reset();
-        // Optionnel : feedback visuel sur le bouton
-        const buttonValid = document.querySelector(".form-valide")
-        buttonValid.style.backgroundColor = "#1D6154";
-            
+
+            formValid.reset();  
         }   
         }
         else{
@@ -384,15 +480,4 @@ const recupBoutonAjoutPhotos = document.querySelector(".upload-button");
         alert ("Erreur de connexion au serveur")
         console.log(error);
     }
-}
-
-/*
-            const newFigure = document.createElement("figure");
-            const newImage = document.createElement("img");
-                  newImage.src = newWork.imageUrl
-            const newFigCatption = document.createElement("figcaption");
-                  newFigCatption.innerText = newWork.title;
-
-            newFigure.appendChild(newImage);
-            newFigure.appendChild(newFigCatption);
-            gallery.prepend(newFigure)*/
+};
