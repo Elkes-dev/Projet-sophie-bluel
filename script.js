@@ -357,7 +357,21 @@ const recupBoutonAjoutPhotos = document.querySelector(".upload-button");
             fileRecup.addEventListener("change",function(event) {
             
             const file = event.target.files[0];
-                
+
+                // TYPE DE FORMATS AUTORISEES 
+            const formatsValides = ["image/png", "image/jpeg"]
+                  if(!formatsValides.includes(file.type)){
+                        alert("LE FORMAT DU FICHIER N'EST PAS VALIDE");
+                    event.target.value="";
+                    return;
+                  }
+                // TAILLE DU FORMAT AUTORISEE
+            const maxSize = 4 * 1024 *1024;
+                  if(file.size > maxSize){
+                      alert("LA TAILLE DU FICHIER DEPASSE LA LIMITE AUTORISEE");
+                      event.target.value="";
+                      return;
+                  }
             if(file){
                const imgRecupUrl = document.getElementById("image-pre-envoie");
                      imgRecupUrl.src = URL.createObjectURL(file)
@@ -370,6 +384,7 @@ const recupBoutonAjoutPhotos = document.querySelector(".upload-button");
                 const recupFormatPhotos = document.querySelector(".format-photos");                        
                         recupUploadButton.style.display="none";
                         recupFormatPhotos.style.display="none";
+                        console.log(file);
             };
             };
             });
@@ -488,6 +503,7 @@ function reinitialisation(){
     const formatPhotos = document.querySelector(".format-photos");
     formatPhotos.style.display = "block"; 
 
-    
     document.getElementById("new-photo").value = "";
+
+    document.querySelector(".form-valide").style.backgroundColor = "#A7A7A7";
 }
