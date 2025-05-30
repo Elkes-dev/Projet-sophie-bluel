@@ -19,10 +19,10 @@ async function recupWorks (){
     const token = localStorage.getItem("token"); // MASQUE LES BOUTONS SI L'UTILISATEUR SE CONNECTE
     if(!token){
     createButtons(allworks);
-    const recupNav = document.getElementById("portfolio")
+    const recupNav = document.getElementById("portfolio");
           recupNav.style.display="block";
     const header = document.querySelector("header");
-          header.style.marginTop = "30px"
+          header.style.marginTop = "30px";
     }else{
         boutonModifier();
         ecouteurBoutonModifier();
@@ -64,8 +64,19 @@ const buttonTous = document.createElement("button");
         const buttons = document.createElement("button");
               buttons.innerText = element.name;
               buttons.dataset.id = element.id;    // On stocke l’ID dans un attribut HTML (data-id)
-              buttons.classList.add("my-buttons");    // AJOUT DE LA CLASSE
+              buttons.classList.add("my-buttons");    // AJOUT DE LA CLASSE CSS
         buttons.addEventListener("click", function(){
+
+              // Réinitialise le style de tous les boutons
+        const allButtons = menuCategories.querySelectorAll("button");
+              allButtons.forEach(btn => {
+              btn.style.backgroundColor = "white";
+              btn.style.color = "#1D6154";
+        });
+
+        this.style.backgroundColor = "#1D6154";
+        this.style.color = "white";
+
             const idClique = parseInt(buttons.dataset.id);
             const filtres = allworks.filter(imagesFiltrées => imagesFiltrées.category.id === idClique);
         genererImage(filtres);
@@ -397,6 +408,7 @@ const recupBoutonAjoutPhotos = document.querySelector(".upload-button");
       async function loadCategories(){
 
         const recupCategForm = document.querySelector(".categorie")
+         //     recupCategForm.innerHTML='<option value=""></option>';
 
             // RECUPERATION DYNAMIQUEMENT DES CATEGORIES
 
@@ -491,7 +503,7 @@ document.querySelector(".categorie").addEventListener("change", validButton);
         console.log(error);
     }
 };
-
+// REINITIALISE LE FORMULAIRE 
 function reinitialisation(){
     const imgsupprim = document.getElementById("image-pre-envoie");
     imgsupprim.src = "";
